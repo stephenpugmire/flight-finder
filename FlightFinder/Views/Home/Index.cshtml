@@ -1,0 +1,39 @@
+﻿@model FlightFinder.Models.FlightSearchRequest
+@using GridMvc.Html
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section css {
+    <link href="@Url.Content("~/Content/Gridmvc.css")" rel="stylesheet" type="text/css" />
+}
+<h2>Flight Finder</h2>
+
+<div>
+    @using (Html.BeginForm("Index", "Home"))
+    {
+        <label>From:</label>
+        @Html.TextBox("From", Model.From)
+        <label>To:</label>
+        @Html.TextBox("To", Model.To)
+        <input type="submit" value="Search Flights" />
+    }
+</div>
+
+<div class="col-md-3">
+    @Html.Grid(Model.Results).Columns(columns =>
+{
+    columns.Add(col => col.From);
+    columns.Add(col => col.To);
+    columns.Add(col => col.FlightNumber).Titled("Flight #");
+    columns.Add(col => col.Departs).Sortable(true);
+    columns.Add(col => col.Arrives);
+    columns.Add(col => col.MainCabinPrice).Titled("Main Cabin Price").Sortable(true);
+    columns.Add(col => col.FirstClassPrice).Titled("First Class Price").Sortable(true);
+}
+    )
+</div>
+
+@section Scripts {
+    <script src="@Url.Content("~/Scripts/gridmvc.min.js")" type="text/javascript"> </script>
+}
